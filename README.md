@@ -65,15 +65,9 @@ python data_cleaning_tool.py
 ![Backup Notification](images/backup_notification.png)
 *Backup Notification: Create backups of your input folder before making changes.*
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## Acknowledgements
 
 - [Tkinter](https://docs.python.org/3/library/tkinter.html)
 - [Pillow](https://python-pillow.org/)
 
 ---
-
-Feel free to customize this README further to suit your needs. Adding screenshots of the application in action will enhance its visual appeal and provide users with a clearer understanding of how to use the tool.
