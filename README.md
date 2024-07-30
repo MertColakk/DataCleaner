@@ -67,6 +67,7 @@ python data_cleaning_tool.py
 *Main Interface: Select, navigate, and manage your images effortlessly.*
 
 *Backup Notification: Create backups of your input folder before making changes.*
+
 ![Backup Notification](images/github_images/backup_notification.png)
 
 ## Acknowledgements
