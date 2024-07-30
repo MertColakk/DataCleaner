@@ -47,22 +47,24 @@ python data_cleaning_tool.py
 
 1. **Select Folders**: Click on the "Select Folders" button to open the folder selection window. Choose your input, output, and delete folders. Optionally, check the "Create Backup of Input Folder" box to create a backup.
 
-![Folder Selection](images/folder_selection.png)
+![Folder Selection](images/github_images/folder_select.png)
 
 2. **Navigate Images**: Use the "Previous" and "Next" buttons or the arrow keys to browse through your images. The selected image will be displayed in the main window.
 
-![Image Navigation](images/image_navigation.png)
+![Image Navigation](images/github_images/bottom_menu.png)
 
 3. **Move or Delete Images**: Use the "Move" button to move the current image (and its corresponding .txt file, if any) to the output folder. Use the "Delete" button to move the current image to the delete folder.
 
 4. **Check File Integrity**: Click the "Check File Integrity" button to verify that all images have corresponding .txt files and vice versa. Any mismatched files will be listed.
+![File_Integrity_Good](images/github_images/check_good.png)
+![File_Integrity_Mistake](images/github_images/check_bad.png)
 
 ## Screenshots
 
-![Main Interface](images/main_interface.png)
+![Main Interface](images/github_images/interface.png)
 *Main Interface: Select, navigate, and manage your images effortlessly.*
 
-![Backup Notification](images/backup_notification.png)
+![Backup Notification](images/github_images/backup_notification.png)
 *Backup Notification: Create backups of your input folder before making changes.*
 
 ## Acknowledgements
