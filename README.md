@@ -55,8 +55,10 @@ python data_cleaning_tool.py
 
 3. **Move or Delete Images**: Use the "Move" button to move the current image (and its corresponding .txt file, if any) to the output folder. Use the "Delete" button to move the current image to the delete folder.
 
-4. **Check File Integrity**: Click the "Check File Integrity" button to verify that all images have corresponding .txt files and vice versa. Any mismatched files will be listed.\n
-![File_Integrity_Good](images/github_images/check_good.png)\n
+4. **Check File Integrity**: Click the "Check File Integrity" button to verify that all images have corresponding .txt files and vice versa. Any mismatched files will be listed.
+
+![File_Integrity_Good](images/github_images/check_good.png)
+
 ![File_Integrity_Mistake](images/github_images/check_bad.png)
 
 ## Screenshots
