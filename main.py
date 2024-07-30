@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 from PIL import Image, ImageTk
 import os
 import shutil
@@ -10,7 +10,6 @@ root.title("Data Cleaning Tool by Mustafa Mert Çolak")
 root.resizable(False, False)
 root.geometry('1280x764')
 root.iconphoto(False, tk.PhotoImage(file='images/icon.png'))
-root.iconname()
 
 # Global variables
 current_input_folder = None
@@ -18,10 +17,13 @@ current_output_folder = None
 current_delete_folder = None
 current_image_index = 0
 image_files = []
+create_backup = tk.BooleanVar()
+
 
 # Tkinter Methods
 def select_folder_method():
     return filedialog.askdirectory()
+
 
 def create_popup():
     # Input Window Settings
@@ -46,13 +48,22 @@ def create_popup():
         current_input_folder = input_label.cget("text").replace("Input Folder: ", "")
         current_output_folder = output_label.cget("text").replace("Output Folder: ", "")
         current_delete_folder = delete_label.cget("text").replace("Delete Folder: ", "")
+
+        if create_backup.get():
+            backup_folder = current_input_folder + "_backup"
+            if not os.path.exists(backup_folder):
+                shutil.copytree(current_input_folder, backup_folder)
+                messagebox.showinfo("Backup", f"Backup created at: {backup_folder}")
+
         list_files(current_input_folder)
         list_output_files(current_output_folder)
+        list_delete_files(current_delete_folder)
         print(f"Input Folder: {current_input_folder}")
         print(f"Output Folder: {current_output_folder}")
         print(f"Delete Folder: {current_delete_folder}")
         input_window.destroy()
 
+    # Buttons and Labels for folder selection
     input_button = tk.Button(input_window, text='Select Input Folder', command=set_input_folder, pady=20, padx=20)
     input_button.pack(pady=20)
 
@@ -71,8 +82,12 @@ def create_popup():
     delete_label = tk.Label(input_window, text="Delete Folder: Not Selected", pady=10)
     delete_label.pack()
 
+    backup_checkbutton = tk.Checkbutton(input_window, text="Create Backup of Input Folder", variable=create_backup)
+    backup_checkbutton.pack(pady=10)
+
     submit_button = tk.Button(input_window, text='Submit', command=submit_folders, pady=20, padx=20)
     submit_button.pack(pady=20)
+
 
 def list_files(folder_path):
     global image_files
@@ -83,6 +98,7 @@ def list_files(folder_path):
         for file in image_files:
             file_list.insert(tk.END, file)
 
+
 def list_output_files(folder_path):
     output_file_list.delete(0, tk.END)  # Clear the output listbox
     if folder_path and os.path.isdir(folder_path):
@@ -91,6 +107,7 @@ def list_output_files(folder_path):
         for file in output_files:
             output_file_list.insert(tk.END, file)
 
+
 def list_delete_files(folder_path):
     delete_file_list.delete(0, tk.END)  # Clear the delete listbox
     if folder_path and os.path.isdir(folder_path):
@@ -98,6 +115,7 @@ def list_delete_files(folder_path):
                         f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.txt'))]
         for file in delete_files:
             delete_file_list.insert(tk.END, file)
+
 
 def display_image(event=None):
     global current_image_index
@@ -116,6 +134,7 @@ def display_image(event=None):
         image_label.config(image='')
         image_name_label.config(text='No images left')
 
+
 def display_output_image(event=None):
     global current_image_index
     if event:
@@ -129,17 +148,20 @@ def display_output_image(event=None):
         image_label.image = photo
         image_name_label.config(text=selected_file)
 
+
 def next_image(event=None):
     global current_image_index
     if current_image_index < len(image_files) - 1:
         current_image_index += 1
         display_image()
 
+
 def prev_image(event=None):
     global current_image_index
     if current_image_index > 0:
         current_image_index -= 1
         display_image()
+
 
 def move_image(event=None):
     global current_image_index
@@ -164,6 +186,7 @@ def move_image(event=None):
         display_image()
         list_output_files(current_output_folder)
         list_files(current_input_folder)
+
 
 def delete_image(event=None):
     global current_image_index
@@ -190,6 +213,35 @@ def delete_image(event=None):
         list_output_files(current_output_folder)
         list_delete_files(current_delete_folder)
 
+
+def check_files():
+    if not current_input_folder:
+        messagebox.showwarning("Warning", "Please select an input folder first.")
+        return
+
+    mismatched_files = []
+    image_files = [f for f in os.listdir(current_input_folder) if
+                   f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp'))]
+    txt_files = [f for f in os.listdir(current_input_folder) if f.lower().endswith('.txt')]
+
+    image_basenames = set(os.path.splitext(f)[0] for f in image_files)
+    txt_basenames = set(os.path.splitext(f)[0] for f in txt_files)
+
+    missing_txt_files = image_basenames - txt_basenames
+    missing_image_files = txt_basenames - image_basenames
+
+    if missing_txt_files or missing_image_files:
+        if missing_txt_files:
+            mismatched_files.extend(f"{f}.txt" for f in missing_txt_files)
+        if missing_image_files:
+            mismatched_files.extend(f"{f}.jpg" for f in missing_image_files)
+
+        mismatched_files_str = "\n".join(mismatched_files)
+        messagebox.showinfo("File Integrity Check", f"The following files are mismatched:\n{mismatched_files_str}")
+    else:
+        messagebox.showinfo("File Integrity Check", "All files are correctly matched.")
+
+
 # Create a frame on the left side of the root window
 left_frame = tk.Frame(root)
 left_frame.pack(side=tk.LEFT, fill=tk.Y)
@@ -214,7 +266,6 @@ output_folder_label.pack()
 output_file_list = tk.Listbox(output_delete_frame, width=25, height=20)
 output_file_list.pack(side=tk.TOP, fill=tk.Y)
 
-
 # Create a Label to display "Delete Folder" at the bottom
 delete_folder_label = tk.Label(output_delete_frame, text="Delete Folder", pady=10)
 delete_folder_label.pack()
@@ -222,6 +273,10 @@ delete_folder_label.pack()
 # Create a Listbox to display the delete folder files
 delete_file_list = tk.Listbox(output_delete_frame, width=25, height=20)
 delete_file_list.pack(side=tk.TOP, fill=tk.Y)
+
+# Add a button to check file integrity
+check_file_integrity = tk.Button(output_delete_frame, text='Check File Integrity', command=check_files)
+check_file_integrity.pack(pady=10)
 
 # Bind the Listbox selection event to display the image
 file_list.bind('<<ListboxSelect>>', display_image)
