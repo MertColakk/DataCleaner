@@ -33,7 +33,7 @@ pip install tk pillow
 1. Clone this repository to your local machine:
 
 ```bash
-git clone https://github.com/your-username/data-cleaning-tool.git
+git clone https://github.com/MertColakk/data-cleaning-tool.git
 cd data-cleaning-tool
 ```
 
