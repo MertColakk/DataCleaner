@@ -1,4 +1,4 @@
-# Data Cleaning Tool v1 by Mustafa Mert Çolak
+# Data Cleaning Tool v0.0.1 by Mustafa Mert Çolak
 
 Welcome to the **Data Cleaning Tool**, a powerful application designed to help you manage and clean image datasets for models like YOLO. This tool enables you to effortlessly organize and filter your images, ensuring that your dataset is optimized for training.
 
